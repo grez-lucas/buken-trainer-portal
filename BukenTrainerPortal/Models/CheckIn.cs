@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace BukenTrainerPortal.Models
 {
     public class CheckIn
