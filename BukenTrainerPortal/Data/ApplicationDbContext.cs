@@ -13,58 +13,143 @@ namespace BukenTrainerPortal.Data
         public DbSet<Coach> Coaches { get; set; }
         public DbSet<CheckIn> CheckIns { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            var coachBuken = new Coach
-            {
-                ID = 1,
-                FirstName = "Luken",
-                LastName = "Buken",
-            };
-            var coachKyl = new Coach
-            {
-                ID = 2,
-                FirstName = "Kyl",
-                LastName = "Buken",
-            };
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+            optionsBuilder
+                .UseNpgsql(
+                    "Host=localhost;Port=5432;Database=trainer_portal_db;Username=postgres;Password=postgres;"
+                )
+                .UseSeeding(
+                    (context, _) =>
+                    {
+                        var coach1 = new Coach
+                        {
+                            ID = 1,
+                            FirstName = "Luken",
+                            LastName = "Buken",
+                        };
+                        var coach2 = new Coach
+                        {
+                            ID = 2,
+                            FirstName = "Anna",
+                            LastName = "Smith",
+                        };
+                        var coach3 = new Coach
+                        {
+                            ID = 3,
+                            FirstName = "Carlos",
+                            LastName = "Garcia",
+                        };
 
-            modelBuilder
-                .Entity<Coach>()
-                .HasData(
-                    coachBuken,
-                    coachKyl,
-                    new Coach
+                        context.Set<Coach>().AddRange(coach1, coach2, coach3);
+                        context.SaveChanges();
+
+                        context
+                            .Set<Athlete>()
+                            .AddRange(
+                                new Athlete
+                                {
+                                    FirstName = "Alice",
+                                    LastName = "Johnson",
+                                    CoachId = 1,
+                                }, // Assigned to Luken Buken
+                                new Athlete
+                                {
+                                    FirstName = "Bob",
+                                    LastName = "Williams",
+                                    CoachId = 1,
+                                }, // Assigned to Luken Buken
+                                new Athlete
+                                {
+                                    FirstName = "Charlie",
+                                    LastName = "Brown",
+                                    CoachId = 2,
+                                }, // Assigned to Anna Smith
+                                new Athlete
+                                {
+                                    FirstName = "David",
+                                    LastName = "Davis",
+                                    CoachId = 2,
+                                }, // Assigned to Anna Smith
+                                new Athlete
+                                {
+                                    FirstName = "Eve",
+                                    LastName = "Miller",
+                                    CoachId = 3,
+                                } // Assigned to Carlos Garcia
+                            );
+                        context.SaveChanges();
+                    }
+                )
+                .UseAsyncSeeding(
+                    async (context, _, cancellationToken) =>
                     {
-                        ID = 3,
-                        FirstName = "John",
-                        LastName = "Jewett",
+                        if (!await context.Set<Coach>().AnyAsync(c => c.ID == 1, cancellationToken))
+                        {
+                            var coach1 = new Coach
+                            {
+                                ID = 1,
+                                FirstName = "Luken",
+                                LastName = "Buken",
+                            };
+                            var coach2 = new Coach
+                            {
+                                ID = 2,
+                                FirstName = "Anna",
+                                LastName = "Smith",
+                            };
+                            var coach3 = new Coach
+                            {
+                                ID = 3,
+                                FirstName = "Carlos",
+                                LastName = "Garcia",
+                            };
+                            context.Set<Coach>().AddRange(coach1, coach2, coach3);
+                            await context.SaveChangesAsync(cancellationToken);
+                        }
+
+                        if (
+                            !await context
+                                .Set<Athlete>()
+                                .AnyAsync(a => a.ID == 1, cancellationToken)
+                        )
+                        {
+                            context
+                                .Set<Athlete>()
+                                .AddRange(
+                                    new Athlete
+                                    {
+                                        FirstName = "Alice",
+                                        LastName = "Johnson",
+                                        CoachId = 1,
+                                    }, // Assigned to Luken Buken
+                                    new Athlete
+                                    {
+                                        FirstName = "Bob",
+                                        LastName = "Williams",
+                                        CoachId = 1,
+                                    }, // Assigned to Luken Buken
+                                    new Athlete
+                                    {
+                                        FirstName = "Charlie",
+                                        LastName = "Brown",
+                                        CoachId = 2,
+                                    }, // Assigned to Anna Smith
+                                    new Athlete
+                                    {
+                                        FirstName = "David",
+                                        LastName = "Davis",
+                                        CoachId = 2,
+                                    }, // Assigned to Anna Smith
+                                    new Athlete
+                                    {
+                                        FirstName = "Eve",
+                                        LastName = "Miller",
+                                        CoachId = 3,
+                                    } // Assigned to Carlos Garcia
+                                );
+                            await context.SaveChangesAsync(cancellationToken);
+                        }
                     }
                 );
-            modelBuilder
-                .Entity<Athlete>()
-                .HasData(
-                    new Athlete
-                    {
-                        ID = 1,
-                        FirstName = "Jane",
-                        LastName = "Doe",
-                        Coach = coachBuken,
-                    },
-                    new Athlete
-                    {
-                        ID = 2,
-                        FirstName = "John",
-                        LastName = "Smith",
-                        Coach = coachKyl,
-                    },
-                    new Athlete
-                    {
-                        ID = 3,
-                        FirstName = "John",
-                        LastName = "Doe",
-                        Coach = coachBuken,
-                    }
-                );
-        }
     }
 }

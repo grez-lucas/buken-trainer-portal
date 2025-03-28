@@ -9,6 +9,11 @@ namespace BukenTrainerPortal.Models
         public DateTime UpdatedAt { get; set; }
 
         public ICollection<CheckIn>? CheckIns { get; set; }
-        public required Coach Coach { get; set; }
+
+        // Foreign key property
+        public int CoachId { get; set; }
+
+        // Navigation property to the coach
+        public Coach Coach { get; set; }
     }
 }
