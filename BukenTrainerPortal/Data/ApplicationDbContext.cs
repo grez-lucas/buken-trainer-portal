@@ -15,26 +15,54 @@ namespace BukenTrainerPortal.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            var coachBuken = new Coach
+            {
+                ID = 1,
+                FirstName = "Luken",
+                LastName = "Buken",
+            };
+            var coachKyl = new Coach
+            {
+                ID = 2,
+                FirstName = "Kyl",
+                LastName = "Buken",
+            };
+
+            modelBuilder
+                .Entity<Coach>()
+                .HasData(
+                    coachBuken,
+                    coachKyl,
+                    new Coach
+                    {
+                        ID = 3,
+                        FirstName = "John",
+                        LastName = "Jewett",
+                    }
+                );
             modelBuilder
                 .Entity<Athlete>()
                 .HasData(
                     new Athlete
                     {
                         ID = 1,
-                        FirstName = "Luken",
-                        LastName = "Buken",
+                        FirstName = "Jane",
+                        LastName = "Doe",
+                        Coach = coachBuken,
                     },
                     new Athlete
                     {
                         ID = 2,
                         FirstName = "John",
                         LastName = "Smith",
+                        Coach = coachKyl,
                     },
                     new Athlete
                     {
                         ID = 3,
                         FirstName = "John",
                         LastName = "Doe",
+                        Coach = coachBuken,
                     }
                 );
         }

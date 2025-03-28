@@ -9,5 +9,6 @@ namespace BukenTrainerPortal.Models
         public DateTime UpdatedAt { get; set; }
 
         public ICollection<CheckIn>? CheckIns { get; set; }
+        public required Coach Coach { get; set; }
     }
 }

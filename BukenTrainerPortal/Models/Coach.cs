@@ -8,6 +8,6 @@ namespace BukenTrainerPortal.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public ICollection<CheckIn>? CheckIns { get; set; }
+        public ICollection<Athlete>? Athletes { get; set; }
     }
 }
