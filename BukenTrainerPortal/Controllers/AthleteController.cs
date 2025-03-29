@@ -1,6 +1,7 @@
 using BukenTrainerPortal.Data;
 using BukenTrainerPortal.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BukenTrainerPortal.Controllers;
 
@@ -17,7 +18,7 @@ public class AthletesController : Controller
 
     public IActionResult Index()
     {
-        List<Athlete> objAthleteList = _db.Athletes.ToList();
-        return View();
+        List<Athlete> objAthleteList = _db.Athletes.Include(a => a.Coach).ToList();
+        return View(objAthleteList);
     }
 }
