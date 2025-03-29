@@ -1,9 +1,19 @@
 @model List<Athlete>
 
   <div class="container text-center">
-    <div class="row align-items-start">
-      <i class="bi bi-person-badge-fill"></i>
-      <h1>Athletes List</h1>
+    <div class="row pt-4">
+
+      <div class="col-6 text-start">
+        <h1>
+          <i class="bi bi-person-badge-fill"></i>
+          Athletes List
+        </h1>
+      </div>
+      <div class="col-6 text-end pb-3">
+        <a asp-controller="Athletes" asp-action="Create" class="btn btn-primary">
+          <i class="bi bi-plus-circle"></i> Add Athlete
+        </a>
+      </div>
     </div>
   </div>
   <table class="table table-bordered table-striped">

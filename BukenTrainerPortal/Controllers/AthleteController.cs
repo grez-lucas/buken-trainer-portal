@@ -21,4 +21,33 @@ public class AthletesController : Controller
         List<Athlete> objAthleteList = _db.Athletes.Include(a => a.Coach).ToList();
         return View(objAthleteList);
     }
+
+    public IActionResult Create()
+    {
+        List<Coach> coaches = _db.Coaches.ToList();
+
+        // Pass list of coaches to the view using ViewBag
+        ViewBag.CoachList = coaches;
+
+        return View();
+    }
+
+    // POST: /Athletes/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Create(Athlete model)
+    {
+        if (ModelState.IsValid)
+        {
+            _db.Athletes.Add(model);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        List<Coach> coaches = _db.Coaches.ToList();
+        ViewBag.CoachList = coaches;
+
+        // Return the model back to the view wth errors
+        return View(model);
+    }
 }
