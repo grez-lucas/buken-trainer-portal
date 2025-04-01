@@ -37,6 +37,10 @@ public class AthletesController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Create(Athlete model)
     {
+        if (model.FirstName == "Test")
+        {
+            ModelState.AddModelError("firstname", "Test is an invalid FirstName");
+        }
         if (ModelState.IsValid) // Check if the C# object is valid
         {
             _db.Athletes.Add(model);
