@@ -37,7 +37,7 @@ public class AthletesController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Create(Athlete model)
     {
-        if (ModelState.IsValid)
+        if (ModelState.IsValid) // Check if the C# object is valid
         {
             _db.Athletes.Add(model);
             _db.SaveChanges();

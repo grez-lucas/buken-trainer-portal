@@ -11,10 +11,12 @@
     <div class="mb-3 p-1">
       <label asp-for="FirstName" class="p-0"></label>
       <input asp-for="FirstName" type="text" class="form-control">
+      <span asp-validation-for="FirstName" class="text-danger"></span>
     </div>
     <div class="mb-3 p-1">
       <label asp-for="LastName" class="p-0"></label>
       <input asp-for="LastName" type="text" class="form-control">
+      <span asp-validation-for="LastName" class="text-danger"></span>
     </div>
     <div class="mb-3 p-1">
       <label asp-for="CoachId" class="p-0"></label>

@@ -10,9 +10,11 @@ namespace BukenTrainerPortal.Models
 
         [Required]
         [DisplayName("First Name")]
+        [MaxLength(30)]
         public required string FirstName { get; set; }
 
         [Required]
+        [MaxLength(30)]
         [DisplayName("Last Name")]
         public required string LastName { get; set; }
 
